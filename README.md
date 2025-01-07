@@ -11,6 +11,28 @@ WriteAI is a modern web application that leverages various AI models to generate
 - ⏰ **Time-Saving** - Automate your content creation workflow efficiently
 - 🎨 **Customizable** - Fine-tune outputs to match your brand voice and style
 
+## Usage Guide
+
+### Landing Page
+![Landing Page](https://github.com/user-attachments/assets/f6a2313f-a489-42d0-a53a-a02b8d30b727)
+The landing page showcases our modern, intuitive interface with key features and benefits.
+
+### Step 1: Select Provider
+![Select Provider](https://github.com/user-attachments/assets/38befbc9-8d06-4f2c-8aa8-e2c7c9b72ef1)
+Choose your preferred AI provider from the dropdown menu. We support multiple leading AI providers.
+
+### Step 2: Select Model
+![Select Model](https://github.com/user-attachments/assets/bd8df284-6fa6-4035-870f-017d5cc4ebeb)
+Pick the specific AI model you want to use. Different models are optimized for different types of content.
+
+### Step 3: Enter API Key
+![Enter API Key](https://github.com/user-attachments/assets/09944fed-5326-439c-816d-56214810ce21)
+Enter your API key for the selected provider. Your key is never stored and is used only for the current session.
+
+### Step 4: Generate Content
+![Generate Content](https://github.com/user-attachments/assets/e3ea497a-7941-4110-ab38-295f8ed65e9b)
+Write your prompt or input text, and click the "Generate" button to create your AI-powered content.
+
 ## Tech Stack
 
 ### Frontend
