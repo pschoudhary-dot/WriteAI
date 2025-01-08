@@ -7,16 +7,21 @@ import signal
 from phi.agent import Agent
 from phi.model.groq import Groq
 from phi.model.google import Gemini
-from phi.tools.googlesearch import GoogleSearch
+from phi.tools.duckduckgo import DuckDuckGo
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+]
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your frontend URL
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -208,11 +213,11 @@ async def generate_content(request: GenerationRequest):
         # Initialize agents
         researcher = Agent(
             role='Content Researcher',
-            goal='Find relevant articles and generate concise summaries',
+            goal='Find relevant 10-15 articles and generate concise summaries',
             description='Skilled researcher with expertise in identifying and summarizing key information',
-            instructions=f'Research and summarize information about: {request.input_text}',
+            instructions=f'Research and summarize information about: {request.input_text}, always mention sources and references',
             model=model,
-            tools=[GoogleSearch(api_key=request.serper_api_key)] if request.serper_api_key else [],
+            tools=[DuckDuckGo()],
             verbose=True
         )
         print("research kr raha hu malik")
@@ -220,7 +225,7 @@ async def generate_content(request: GenerationRequest):
         writer = Agent(
             role='Content Writer',
             goal='Generate platform-specific content based on research',
-            description='Experienced content writer with platform expertise',
+            description='you are a senior NYT write that have a passion to write content for the platform. you are amazing articles for different platforms that are engaging and have a high engagement rate with a great hook and content either its informative tutorials or reviews or coding you are always great writer. you have to write eo friendly content that can rank. Experienced content writer with platform expertise, dont ask any questionsa to the user and just write the content',
             instructions=f"""
             Generate content for {request.platform.value} with the following requirements:
             {get_platform_instructions(request.platform)}
@@ -233,9 +238,13 @@ async def generate_content(request: GenerationRequest):
 
         # Create multi-agent team
         multi_agent = Agent(
+            role="Content Generator",
+            goal="Generate content for the given platform",
+            description="A multi-agent system that generates content for the given platform",
+            instructions=f"write as a senior NYT write that have a passion to write content for the platform. you are amazing articles for different platforms that are engaging and have a high engagement rate with a great hook and content either its informative tutorials or reviews or coding you are always great writer. you have to write eo friendly content that can rank. Experienced content writer with platform expertise. Generate content for {request.platform.value} with the following requirements: {get_platform_instructions(request.platform)} and the topic is {request.input_text} dont talk like and ai agent and your name is writeAI. you just have to deliver  a top quality article or content based on the platform",
             model=model,
             team=[researcher, writer],
-            show_tool_calls=True,
+            #show_tool_calls=True,
             markdown=True
         )
 
@@ -246,13 +255,13 @@ async def generate_content(request: GenerationRequest):
         return GenerationResponse(
             content=response.content,
             summary=response.summary if hasattr(response, 'summary') else None,
-            status="success"
+            status="success",
         )
-        print("content generate krdiya malik")
+        
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-        print("error aagya malik")
+
 
 @app.get("/api/providers")
 async def get_providers():
@@ -266,11 +275,10 @@ async def get_providers():
                 "name": Provider.GROQ,
                 "models": [model.value for model in GroqModel]
             }
-        ]
+        ]   
     }
-    print("providers mil gaya malik")
     
-@app.get("/api/platforms")
+@app.get("/api/platforms")  
 async def get_platforms():
     return {
         "platforms": [
@@ -280,7 +288,6 @@ async def get_platforms():
             } for platform in Platform
         ]
     }
-    print("platforms mil gaya malik")
 
 @app.on_event("shutdown")
 async def shutdown_event():
