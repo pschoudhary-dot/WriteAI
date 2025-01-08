@@ -20,7 +20,7 @@ export default function Contribute() {
             around the world. Help us make content generation more accessible and powerful.
           </p>
           <motion.a
-            href="https://github.com/writeai/writeai"
+            href="https://github.com/pschoudhary-dot/WriteAI"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
