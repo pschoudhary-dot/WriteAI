@@ -1,7 +1,7 @@
 # WriteAI - AI Content Generator
 
 WriteAI is a modern web application that leverages various AI models to generate optimized content for different platforms. With a beautiful and intuitive user interface, it provides a seamless experience for content creation across multiple platforms.
--  ![Access](https://writeai-new.netlify.app/)
+-  [Access WriteAI](https://writeai-new.netlify.app/)
 ## Features
 
 - 🚀 **Lightning Fast Generation** - Generate content in seconds with our optimized AI pipeline
